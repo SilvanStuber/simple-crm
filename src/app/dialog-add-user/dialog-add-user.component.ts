@@ -11,16 +11,15 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {
-  MatCalendarCellClassFunction,
   MatDatepickerModule,
 } from '@angular/material/datepicker';
 import { CommonModule } from '@angular/common';
-import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
+import { MAT_DATE_LOCALE, MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-dialog-add-user',
   standalone: true,
-  providers: [provideNativeDateAdapter()],
+  providers: [provideNativeDateAdapter(), { provide: MAT_DATE_LOCALE, useValue: 'de-DE' }],
   imports: [
     CommonModule,
     MatFormFieldModule,
