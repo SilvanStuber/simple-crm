@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import {MatTooltipModule, TooltipPosition} from '@angular/material/tooltip';
 import { DialogAddUserComponent } from '../dialog-add-user/dialog-add-user.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { User } from '../../../public/models/user.class';
 
 @Component({
   selector: 'app-user',
@@ -22,6 +23,7 @@ export class UserComponent {
   readonly animal = signal('');
   readonly name = model('');
   readonly dialog = inject(MatDialog);
+  user: User = new User();
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogAddUserComponent, {
