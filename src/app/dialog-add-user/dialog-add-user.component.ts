@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -26,6 +26,7 @@ import {
   updateDoc,
   addDoc,
 } from '@angular/fire/firestore';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-dialog-add-user',
@@ -48,6 +49,7 @@ import {
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatProgressBarModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './dialog-add-user.component.html',
@@ -58,22 +60,33 @@ export class DialogAddUserComponent {
   user: User = new User();
   birthDate!: Date;
   firestore: Firestore = inject(Firestore);
+  loading = false;
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   /**
-   * Asynchronously saves the user data.
-   * If the birth date is provided, it converts the date to a timestamp
-   * and saves the user document to the database.
-   * Logs the result of the add operation and the current user to the console.
-   * @returns {Promise<void>}
-   */
+ * Asynchronously saves the current user to the database.
+ * If the user has a birth date, it is converted to a timestamp before saving.
+ * Displays loading indicator during the save process.
+ *
+ * @async
+ * @function saveUser
+ * @returns {Promise<void>}
+ */
   async saveUser() {
     if (this.birthDate) {
       this.user.birthDate = this.birthDate.getTime();
-      await addDoc(this.getUserRef(), this.user.toJSON()).then(
-        (result: any) => {
-          console.log('Adding user finisihes', result);
-        }
-      );
+      this.loading = true;
+      this.cdr.detectChanges();
+      try {
+        const result = await addDoc(this.getUserRef(), this.user.toJSON());
+        console.log('Adding user finishes', result);
+      } catch (error) {
+        console.error('Error adding user:', error);
+      } finally {
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
       console.log('Current user', this.user);
     }
   }
