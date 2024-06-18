@@ -1,6 +1,6 @@
 {
-  "SIDEBAR": {
-    "DASHBOARD": "Dashboard",
-    "USER": "User"
+    "SIDEBAR": {
+      "DASHBOARD": "Dashboard",
+      "USER": "User"
+    }
   }
-}

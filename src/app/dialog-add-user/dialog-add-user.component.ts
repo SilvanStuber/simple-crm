@@ -92,8 +92,7 @@ export class DialogAddUserComponent {
    */
   async addNewUserOnFirebase() {
     try {
-      const result = await addDoc(this.getUserRef(), this.user.toJSON());
-      console.log('Adding user finishes', result);
+     await addDoc(collection(this.firestore, 'users'), this.user.toJSON());
     } catch (error) {
       console.error('Error adding user:', error);
     } finally {
@@ -103,14 +102,13 @@ export class DialogAddUserComponent {
     }
   }
 
-  /**
-   * Retrieves the reference to the 'users' collection in Firestore.
-   * @returns {CollectionReference} A reference to the 'users' collection.
-   */
-  getUserRef() {
-    return collection(this.firestore, 'users');
-  }
 
+  /**
+   * Closes the current dialog without taking any action.
+   *
+   * @function onNoCancel
+   * @returns {void}
+   */
   onNoCancel(): void {
     this.dialogRef.close();
   }

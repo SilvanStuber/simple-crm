@@ -1,5 +1,25 @@
-<p>user works!</p>
+<mat-card class="user-table-container" appearance="outlined">
+  <table class="user-table">
+    <tr>
+      <th>Name</th>
+      <th>E-Mail</th>
+      <th>City</th>
+    </tr>
+    <tr >
+      <td></td>
+      <td>eF</td>
+      <td>FE</td>
+    </tr>
+  </table>
+</mat-card>
 
-<button (click)="openDialog()" class="add-user-butten" mat-fab color="primary" matTooltip="Add user" [matTooltipPosition]="position.value!">
-    <mat-icon>add</mat-icon>
-  </button>
+<button
+  (click)="openDialog()"
+  class="add-user-butten"
+  mat-fab
+  color="primary"
+  matTooltip="Add user"
+  [matTooltipPosition]="position.value!"
+>
+  <mat-icon>add</mat-icon>
+</button>
