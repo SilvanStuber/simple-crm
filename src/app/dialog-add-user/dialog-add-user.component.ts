@@ -99,6 +99,7 @@ export class DialogAddUserComponent {
     } finally {
       this.loading = false;
       this.cdr.detectChanges();
+      this.dialogRef.close();
     }
   }
 
