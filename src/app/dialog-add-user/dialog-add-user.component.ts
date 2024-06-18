@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -18,15 +23,8 @@ import {
   provideNativeDateAdapter,
 } from '@angular/material/core';
 import { User } from '../../../public/models/user.class';
-import {
-  Firestore,
-  collection,
-  docData,
-  doc,
-  updateDoc,
-  addDoc,
-} from '@angular/fire/firestore';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-dialog-add-user',
@@ -49,7 +47,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatProgressBarModule
+    MatProgressBarModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './dialog-add-user.component.html',
@@ -65,29 +63,42 @@ export class DialogAddUserComponent {
   constructor(private cdr: ChangeDetectorRef) {}
 
   /**
- * Asynchronously saves the current user to the database.
- * If the user has a birth date, it is converted to a timestamp before saving.
- * Displays loading indicator during the save process.
- *
- * @async
- * @function saveUser
- * @returns {Promise<void>}
- */
+   * Saves the user to Firebase if a birth date is provided.
+   * Converts the birth date to a timestamp and triggers the loading state.
+   * Calls the method to add the user to Firebase and logs the current user.
+   *
+   * @async
+   * @function saveUser
+   * @returns {Promise<void>} A promise that resolves when the user is saved.
+   */
   async saveUser() {
     if (this.birthDate) {
       this.user.birthDate = this.birthDate.getTime();
       this.loading = true;
       this.cdr.detectChanges();
-      try {
-        const result = await addDoc(this.getUserRef(), this.user.toJSON());
-        console.log('Adding user finishes', result);
-      } catch (error) {
-        console.error('Error adding user:', error);
-      } finally {
-        this.loading = false;
-        this.cdr.detectChanges();
-      }
+      await this.addNewUserOnFirebase();
       console.log('Current user', this.user);
+    }
+  }
+
+  /**
+   * Adds the current user to Firebase Firestore.
+   * Attempts to add the user and logs the result. Handles any errors during the process.
+   * Resets the loading state and updates the UI.
+   *
+   * @async
+   * @function addNewUserOnFirebase
+   * @returns {Promise<void>} A promise that resolves when the user is added.
+   */
+  async addNewUserOnFirebase() {
+    try {
+      const result = await addDoc(this.getUserRef(), this.user.toJSON());
+      console.log('Adding user finishes', result);
+    } catch (error) {
+      console.error('Error adding user:', error);
+    } finally {
+      this.loading = false;
+      this.cdr.detectChanges();
     }
   }
 
