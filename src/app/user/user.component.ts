@@ -1,4 +1,4 @@
-import { Component, NgModule, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,8 +14,6 @@ import {
   Firestore,
   collection,
   onSnapshot,
-  doc,
-  collectionData,
 } from '@angular/fire/firestore';
 import { CommonModule } from '@angular/common';
 
@@ -50,15 +48,32 @@ export class UserComponent {
   readonly dialog = inject(MatDialog);
   user: User = new User();
   firestore: Firestore = inject(Firestore);
-  allUsers = [];
+  allUsers: User[] = [];
 
   ngOnInit() {
     onSnapshot(collection(this.firestore, 'users'), (list) => {
       list.forEach(element => {
         console.log('User read from DB', element.data())
+        this.allUsers.push(this.setUserObject(element.data(), element.id))
       });
     });
   } 
+
+
+setUserObject(obj: any, id: string): User {
+  let data = {
+    id: id,
+    firstName: obj['firstName'] || '',
+    lastName: obj.lastName || '',
+    birthDate: obj.birthDate || '',
+    street: obj.street|| '',
+    zipCode: obj.zipCode || '',
+    city: obj.city|| '',
+  };
+
+  return new User(data)
+}
+
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogAddUserComponent);
