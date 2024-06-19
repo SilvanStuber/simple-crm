@@ -49,7 +49,6 @@ export class UserComponent {
    * Initializes component by setting up a snapshot listener on the 'users' collection from Firestore.
    * Updates `allUsers` array with `User` instances representing each document in the collection.
    * Each `User` instance is created from the document's data, including a unique ID.
-   * Logs the current state of `allUsers` to the console whenever it changes.
    */
   ngOnInit() {
     onSnapshot(collection(this.firestore, 'users'), (list) => {
@@ -60,7 +59,6 @@ export class UserComponent {
           id: element.id,
         };
         this.allUsers.push(new User(userData));
-        console.log('User read from this.allUsers', this.allUsers);
       });
     });
   }
