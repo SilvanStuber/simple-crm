@@ -52,28 +52,17 @@ export class UserComponent {
 
   ngOnInit() {
     onSnapshot(collection(this.firestore, 'users'), (list) => {
-      list.forEach(element => {
-        console.log('User read from DB', element.data())
-        this.allUsers.push(this.setUserObject(element.data(), element.id))
+      this.allUsers = [];
+      list.forEach(element => {  
+        let data = {
+          ...element.data(),
+          id: element.id
+        }
+        this.allUsers.push(new User(data))
+        console.log('User read from this.allUsers', this.allUsers)
       });
     });
   } 
-
-
-setUserObject(obj: any, id: string): User {
-  let data = {
-    id: id,
-    firstName: obj['firstName'] || '',
-    lastName: obj.lastName || '',
-    birthDate: obj.birthDate || '',
-    street: obj.street|| '',
-    zipCode: obj.zipCode || '',
-    city: obj.city|| '',
-  };
-
-  return new User(data)
-}
-
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogAddUserComponent);
