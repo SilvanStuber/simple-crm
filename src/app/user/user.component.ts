@@ -12,6 +12,7 @@ import { User } from '../../../public/models/user.class';
 import { MatCardModule } from '@angular/material/card';
 import { Firestore, collection, onSnapshot } from '@angular/fire/firestore';
 import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -26,11 +27,13 @@ import { CommonModule } from '@angular/common';
     MatNativeDateModule,
     MatCardModule,
     CommonModule,
+    RouterOutlet, RouterLink, RouterLinkActive
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
 })
 export class UserComponent {
+  unsubUserList;
   positionOptions: TooltipPosition[] = [
     'after',
     'before',
@@ -45,18 +48,23 @@ export class UserComponent {
   firestore: Firestore = inject(Firestore);
   allUsers: User[] = [];
 
+  constructor() {
+    this.unsubUserList = this.subUserList();
+  }
+
   /**
    * Initializes component by setting up a snapshot listener on the 'users' collection from Firestore.
    * Updates `allUsers` array with `User` instances representing each document in the collection.
    * Each `User` instance is created from the document's data, including a unique ID.
    */
-  ngOnInit() {
-    onSnapshot(collection(this.firestore, 'users'), (list) => {
+  subUserList() {
+    return onSnapshot(collection(this.firestore, 'users'), (list) => {
       this.allUsers = [];
       list.forEach((element) => {
+        console.log(element.data())
         let userData = {
           ...element.data(),
-          id: element.id,
+          idUser: element.id,
         };
         this.allUsers.push(new User(userData));
       });
@@ -68,5 +76,13 @@ export class UserComponent {
    */
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogAddUserComponent);
+  }
+
+  /**
+ * Unsubscribes from user list to prevent memory leaks.
+ * This method is called automatically by Angular just before the component is destroyed.
+ */
+  ngOnDestroy() {
+    this.unsubUserList();
   }
 }
