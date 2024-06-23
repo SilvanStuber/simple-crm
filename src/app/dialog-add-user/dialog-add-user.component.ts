@@ -77,7 +77,6 @@ export class DialogAddUserComponent {
       this.loading = true;
       this.cdr.detectChanges();
       await this.addNewUserOnFirebase();
-      console.log('Current user', this.user);
     }
   }
 

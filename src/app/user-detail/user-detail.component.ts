@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
+  MatDialog,
   MatDialogActions,
   MatDialogClose,
   MatDialogContent,
@@ -15,12 +16,12 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute } from '@angular/router';
-import {
-  Firestore,
-  doc,
-  onSnapshot,
-} from '@angular/fire/firestore';
+import { Firestore, doc, onSnapshot } from '@angular/fire/firestore';
 import { User } from '../../../public/models/user.class';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { DialogEditAddressComponent } from '../dialog-edit-address/dialog-edit-address.component';
+import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.component';
 
 @Component({
   selector: 'app-user-detail',
@@ -36,11 +37,12 @@ import { User } from '../../../public/models/user.class';
     MatDialogActions,
     MatDialogClose,
     MatFormFieldModule,
-    MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatProgressBarModule,
     MatCardModule,
+    MatIconModule,
+    MatMenuModule,
   ],
   templateUrl: './user-detail.component.html',
   styleUrl: './user-detail.component.scss',
@@ -48,8 +50,9 @@ import { User } from '../../../public/models/user.class';
 export class UserDetailComponent {
   unsubUserDetail;
   userId = '';
-  userDetail: User = new User();
+  user: User = new User();
   firestore: Firestore = inject(Firestore);
+  public dialog = inject(MatDialog);
 
   /**
    * Constructor initializes subscriptions to route parameters and user details.
@@ -70,11 +73,10 @@ export class UserDetailComponent {
   subUserDetail() {
     return onSnapshot(doc(this.firestore, 'users', this.userId), (element) => {
       console.log(element.data());
-      let userData = {
+      let user = {
         ...element.data(),
       };
-      this.userDetail = new User(userData);
-      console.log('this.userDetail', this.userDetail);
+      this.user = new User(user);
     });
   }
 
@@ -84,5 +86,23 @@ export class UserDetailComponent {
    */
   ngOnDestroy() {
     this.unsubUserDetail();
+  }
+
+  /**
+   * Opens a dialog to edit the address information.
+   * This method initializes and opens the `DialogEditAddressComponent` to edit the address.
+   */
+  editMenu() {
+    const dialog = this.dialog.open(DialogEditAddressComponent);
+    dialog.componentInstance.user = new User(this.user.toJSON())
+  }
+
+  /**
+   * Opens a dialog to edit user details.
+   * This method initializes and opens the `DialogEditUserComponent` to edit user details.
+   */
+  editUserDeatail() {
+    const dialog = this.dialog.open(DialogEditUserComponent);
+    dialog.componentInstance.user = new User(this.user.toJSON())
   }
 }

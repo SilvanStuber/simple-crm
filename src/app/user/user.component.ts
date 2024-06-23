@@ -43,7 +43,7 @@ export class UserComponent {
     'right',
   ];
   position = new FormControl(this.positionOptions[0]);
-  readonly dialog = inject(MatDialog);
+  public dialog = inject(MatDialog);
   user: User = new User();
   firestore: Firestore = inject(Firestore);
   allUsers: User[] = [];
@@ -75,7 +75,7 @@ export class UserComponent {
    * Opens a dialog window to add a new user using the `DialogAddUserComponent`.
    */
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogAddUserComponent);
+    this.dialog.open(DialogAddUserComponent);
   }
 
   /**
