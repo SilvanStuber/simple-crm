@@ -54,7 +54,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   styleUrl: './dialog-add-user.component.scss',
 })
 export class DialogAddUserComponent {
-  readonly dialogRef = inject(MatDialogRef<DialogAddUserComponent>);
+  public dialogRef = inject(MatDialogRef<DialogAddUserComponent>);
   user: User = new User();
   birthDate!: Date;
   firestore: Firestore = inject(Firestore);

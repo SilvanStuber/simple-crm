@@ -95,6 +95,8 @@ export class UserDetailComponent {
   editMenu() {
     const dialog = this.dialog.open(DialogEditAddressComponent);
     dialog.componentInstance.user = new User(this.user.toJSON())
+    dialog.componentInstance.user = new User(this.user.toJSON())
+    dialog.componentInstance.userId = this.userId;
   }
 
   /**
@@ -104,5 +106,6 @@ export class UserDetailComponent {
   editUserDeatail() {
     const dialog = this.dialog.open(DialogEditUserComponent);
     dialog.componentInstance.user = new User(this.user.toJSON())
+    dialog.componentInstance.userId = this.userId;
   }
 }
