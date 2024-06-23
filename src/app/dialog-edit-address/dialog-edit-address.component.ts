@@ -72,7 +72,12 @@ export class DialogEditAddressComponent {
   async saveUser() {
     this.loading = true;
     this.cdr.detectChanges();
-    await this.updateUserOnFirebase();
+    if (this.userId) {
+      await this.updateUserOnFirebase();
+    } else  {
+      console.error('User ID empty')
+    }
+
   }
 
   /**

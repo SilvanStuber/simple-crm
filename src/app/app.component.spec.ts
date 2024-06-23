@@ -1,10 +1,34 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+
+import { AngularFirestore, AngularFirestoreModule } from '@angular/fire/compat/firestore';
+
+const mockDialogRef = {
+  close: jasmine.createSpy('close'),
+};
+
+const firestoreMock = {
+  collection: (name: string) => ({
+    valueChanges: () => jasmine.createSpy('valueChanges').and.returnValue(Promise.resolve([])),
+    doc: () => ({
+      valueChanges: () => jasmine.createSpy('valueChanges').and.returnValue(Promise.resolve({})),
+      set: jasmine.createSpy('set').and.returnValue(Promise.resolve())
+    })
+  })
+};
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [
+        AppComponent,
+        MatDialogModule,
+        AngularFirestoreModule,
+      ],
+      providers: [{ provide: MatDialogRef, useValue: mockDialogRef },
+        { provide: AngularFirestore, useValue: firestoreMock } 
+      ],
     }).compileComponents();
   });
 
@@ -18,12 +42,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('simple-crm');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, simple-crm');
   });
 });

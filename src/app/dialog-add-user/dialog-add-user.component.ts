@@ -77,6 +77,8 @@ export class DialogAddUserComponent {
       this.loading = true;
       this.cdr.detectChanges();
       await this.addNewUserOnFirebase();
+    } else {
+      console.error('Birth Date empty');
     }
   }
 
@@ -91,7 +93,7 @@ export class DialogAddUserComponent {
    */
   async addNewUserOnFirebase() {
     try {
-     await addDoc(collection(this.firestore, 'users'), this.user.toJSON());
+      await addDoc(collection(this.firestore, 'users'), this.user.toJSON());
     } catch (error) {
       console.error('Error adding user:', error);
     } finally {
@@ -100,7 +102,6 @@ export class DialogAddUserComponent {
       this.dialogRef.close();
     }
   }
-
 
   /**
    * Closes the current dialog without taking any action.

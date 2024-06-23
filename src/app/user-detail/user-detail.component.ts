@@ -48,7 +48,6 @@ import { DialogEditUserComponent } from '../dialog-edit-user/dialog-edit-user.co
   styleUrl: './user-detail.component.scss',
 })
 export class UserDetailComponent {
-  unsubUserDetail;
   userId = '';
   user: User = new User();
   firestore: Firestore = inject(Firestore);
@@ -62,7 +61,9 @@ export class UserDetailComponent {
     this.route.params.subscribe((params) => {
       this.userId = params['id'];
     });
-    this.unsubUserDetail = this.subUserDetail();
+    if (this.userId) {
+      this.subUserDetail();
+    }
   }
 
   /**
@@ -81,21 +82,13 @@ export class UserDetailComponent {
   }
 
   /**
-   * Lifecycle hook that is called when the component is destroyed.
-   * Unsubscribes from the user detail subscription to prevent memory leaks.
-   */
-  ngOnDestroy() {
-    this.unsubUserDetail();
-  }
-
-  /**
    * Opens a dialog to edit the address information.
    * This method initializes and opens the `DialogEditAddressComponent` to edit the address.
    */
   editMenu() {
     const dialog = this.dialog.open(DialogEditAddressComponent);
-    dialog.componentInstance.user = new User(this.user.toJSON())
-    dialog.componentInstance.user = new User(this.user.toJSON())
+    dialog.componentInstance.user = new User(this.user.toJSON());
+    dialog.componentInstance.user = new User(this.user.toJSON());
     dialog.componentInstance.userId = this.userId;
   }
 
@@ -105,7 +98,7 @@ export class UserDetailComponent {
    */
   editUserDeatail() {
     const dialog = this.dialog.open(DialogEditUserComponent);
-    dialog.componentInstance.user = new User(this.user.toJSON())
+    dialog.componentInstance.user = new User(this.user.toJSON());
     dialog.componentInstance.userId = this.userId;
   }
 }
