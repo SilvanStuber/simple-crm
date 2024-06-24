@@ -2,7 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DialogEditUserComponent } from './dialog-edit-user.component';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { Firestore } from '@angular/fire/firestore';
+import { AngularFireModule } from '@angular/fire/compat';
+import { environment } from '../../environments/environment';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+
 
 const mockDialogRef = {
   close: jasmine.createSpy('close'),
@@ -28,7 +31,8 @@ describe('DialogEditUserComponent', () => {
       imports: [
         DialogEditUserComponent,
         MatDialogModule,
-        Firestore
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFirestoreModule
       ],
       providers: [{ provide: MatDialogRef, useValue: mockDialogRef },
       ],
