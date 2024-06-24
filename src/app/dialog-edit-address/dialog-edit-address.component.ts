@@ -66,24 +66,23 @@ export class DialogEditAddressComponent {
   }
 
   /**
-   * Speichert den Benutzer, indem es den Update-Prozess auf Firebase initiiert und das UI währenddessen aktualisiert.
-   * Diese Funktion setzt das Lade-Flag, fordert eine UI-Aktualisierung an und wartet auf den Abschluss des Firebase-Updates.
+   * Saves the user by initiating the update process on Firebase and updating the UI in the meantime.
+   * This function sets the loading flag, requests a UI update, and waits for the Firebase update to complete.
    */
   async saveUser() {
     this.loading = true;
     this.cdr.detectChanges();
     if (this.userId) {
       await this.updateUserOnFirebase();
-    } else  {
-      console.error('User ID empty')
+    } else {
+      console.error('User ID empty');
     }
-
   }
 
   /**
-   * Aktualisiert die Benutzerinformationen in Firebase.
-   * Diese asynchrone Funktion loggt die `userId`, aktualisiert das Benutzerdokument in Firebase und handhabt mögliche Fehler.
-   * Nach erfolgreichem Update wird das Laden-Flag zurückgesetzt und das Dialogfenster geschlossen.
+   * Updates user information in Firebase.
+   * This asynchronous function logs the `userId`, updates the user document in Firebase, and handles potential errors.
+   * After a successful update, the loading flag is reset and the dialog is closed.
    */
   async updateUserOnFirebase() {
     console.log(this.userId);

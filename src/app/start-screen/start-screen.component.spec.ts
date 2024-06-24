@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StartScreenComponent } from './start-screen.component';
+import { Firestore } from '@angular/fire/firestore';
 
 describe('StartScreenComponent', () => {
   let component: StartScreenComponent;
@@ -8,7 +9,7 @@ describe('StartScreenComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StartScreenComponent]
+      imports: [StartScreenComponent, Firestore]
     })
     .compileComponents();
 

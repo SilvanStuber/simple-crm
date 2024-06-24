@@ -1,16 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DialogAddUserComponent } from './dialog-add-user.component';
-import {
-  MAT_DIALOG_DATA,
-  MatDialogModule,
-  MatDialogRef,
-} from '@angular/material/dialog';
-import {
-  AngularFirestore,
-  AngularFirestoreModule,
-} from '@angular/fire/compat/firestore';
-import { AngularFireModule } from '@angular/fire/compat';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { Firestore } from '@angular/fire/firestore';
 
 const mockDialogRef = {
   close: jasmine.createSpy('close'),
@@ -25,8 +17,7 @@ describe('DialogAddUserComponent', () => {
       imports: [
         DialogAddUserComponent,
         MatDialogModule,
-        AngularFireModule,
-        AngularFirestoreModule,
+        Firestore
       ],
       providers: [{ provide: MatDialogRef, useValue: mockDialogRef }],
     }).compileComponents();

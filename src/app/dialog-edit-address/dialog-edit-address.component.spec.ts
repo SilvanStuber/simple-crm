@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DialogEditAddressComponent } from './dialog-edit-address.component';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { Firestore } from '@angular/fire/firestore';
+
 const mockDialogRef = {
   close: jasmine.createSpy('close'),
 };
@@ -17,8 +17,7 @@ describe('DialogEditAddressComponent', () => {
       imports: [
         DialogEditAddressComponent,
         MatDialogModule,
-        AngularFireModule,
-        AngularFirestoreModule,
+        Firestore
       ],
       providers: [{ provide: MatDialogRef, useValue: mockDialogRef }],
     }).compileComponents();

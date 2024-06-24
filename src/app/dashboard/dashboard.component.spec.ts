@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DashboardComponent } from './dashboard.component';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -9,7 +9,7 @@ describe('DashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DashboardComponent, AngularFirestoreModule],
+      imports: [DashboardComponent, Firestore, collection, addDoc],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardComponent);

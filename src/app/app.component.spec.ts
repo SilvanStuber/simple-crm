@@ -1,8 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-
-import { AngularFirestore, AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { Firestore } from '@angular/fire/firestore';
 
 const mockDialogRef = {
   close: jasmine.createSpy('close'),
@@ -24,10 +23,9 @@ describe('AppComponent', () => {
       imports: [
         AppComponent,
         MatDialogModule,
-        AngularFirestoreModule,
+        Firestore,
       ],
       providers: [{ provide: MatDialogRef, useValue: mockDialogRef },
-        { provide: AngularFirestore, useValue: firestoreMock } 
       ],
     }).compileComponents();
   });
