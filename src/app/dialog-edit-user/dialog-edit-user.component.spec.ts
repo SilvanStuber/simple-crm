@@ -5,22 +5,13 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../../environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-
+import { FirestoreModule, getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { initializeApp } from 'firebase/app';
+import { provideFirebaseApp } from '@angular/fire/app';
 
 const mockDialogRef = {
   close: jasmine.createSpy('close'),
 };
-
-const firestoreMock = {
-  collection: (name: string) => ({
-    valueChanges: () => jasmine.createSpy('valueChanges').and.returnValue(Promise.resolve([])),
-    doc: () => ({
-      valueChanges: () => jasmine.createSpy('valueChanges').and.returnValue(Promise.resolve({})),
-      set: jasmine.createSpy('set').and.returnValue(Promise.resolve())
-    })
-  })
-};
-
 
 describe('DialogEditUserComponent', () => {
   let component: DialogEditUserComponent;
@@ -31,8 +22,9 @@ describe('DialogEditUserComponent', () => {
       imports: [
         DialogEditUserComponent,
         MatDialogModule,
-        AngularFireModule.initializeApp(environment.firebase),
-        AngularFirestoreModule
+        FirestoreModule,
+        provideFirestore(() => getFirestore()),
+        provideFirebaseApp(() => initializeApp(environment.firebase)),
       ],
       providers: [{ provide: MatDialogRef, useValue: mockDialogRef },
       ],

@@ -3,6 +3,6 @@
     "workbench.preferredDarkColorTheme": "ThemeNemo",
     "workbench.preferredHighContrastColorTheme": "ThemeNemo",
     "workbench.preferredHighContrastLightColorTheme": "ThemeNemo",
-    "workbench.iconTheme": "material-icon-theme",
+    "workbench.iconTheme": "eq-material-theme-icons-darker",
     "material-icon-theme.activeIconPack": "angular"
 }

@@ -1,23 +1,20 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { Firestore } from '@angular/fire/firestore';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { BrowserModule } from '@angular/platform-browser';
+import {
+  FirestoreModule,
+  getFirestore,
+  provideFirestore,
+} from '@angular/fire/firestore';
+import { FormsModule } from '@angular/forms';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 
 const mockDialogRef = {
   close: jasmine.createSpy('close'),
-};
-
-const firestoreMock = {
-  collection: (name: string) => ({
-    valueChanges: () => jasmine.createSpy('valueChanges').and.returnValue(Promise.resolve([])),
-    doc: () => ({
-      valueChanges: () => jasmine.createSpy('valueChanges').and.returnValue(Promise.resolve({})),
-      set: jasmine.createSpy('set').and.returnValue(Promise.resolve())
-    })
-  })
 };
 
 describe('AppComponent', () => {
@@ -26,11 +23,11 @@ describe('AppComponent', () => {
       imports: [
         AppComponent,
         MatDialogModule,
-        AngularFireModule.initializeApp(environment.firebase),
-        AngularFirestoreModule,
+        FirestoreModule,
+        provideFirestore(() => getFirestore()),
+        provideFirebaseApp(() => initializeApp(environment.firebase)),
       ],
-      providers: [{ provide: MatDialogRef, useValue: mockDialogRef },
-      ],
+      providers: [{ provide: MatDialogRef, useValue: mockDialogRef }],
     }).compileComponents();
   });
 

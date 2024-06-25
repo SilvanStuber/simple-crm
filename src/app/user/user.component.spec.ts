@@ -6,6 +6,9 @@ import { ActivatedRoute } from '@angular/router';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../../environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { Firestore, FirestoreModule, getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { initializeApp } from 'firebase/app';
+import { provideFirebaseApp } from '@angular/fire/app';
 
 const mockDialogRef = {
   close: jasmine.createSpy('close'),
@@ -21,8 +24,13 @@ describe('UserComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserComponent, MatDialogModule, AngularFireModule.initializeApp(environment.firebase),
-        AngularFirestoreModule],
+      imports: [
+        UserComponent,
+        MatDialogModule,
+        FirestoreModule,
+        provideFirestore(() => getFirestore()),
+        provideFirebaseApp(() => initializeApp(environment.firebase)),
+      ],
       providers: [
         { provide: MatDialogRef, useValue: mockDialogRef },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
